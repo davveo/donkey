@@ -1,13 +1,19 @@
 package controller
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"path/filepath"
 	"time"
 
 	"github.com/davveo/donkey/utils/log"
 
 	"github.com/allegro/bigcache"
 
+	"github.com/davveo/donkey/fake"
 	"github.com/davveo/donkey/utils/captcha"
+	"github.com/davveo/donkey/utils/common"
 	"github.com/davveo/donkey/utils/response"
 	"github.com/gin-gonic/gin"
 )
@@ -47,4 +53,18 @@ func HealthCheck(context *gin.Context) {
 
 func QrCode(context *gin.Context) {
 
+}
+
+func AppInstallUpdated(context *gin.Context) {
+	var appInstall fake.AppInstall
+	result := common.ReadJson(filepath.Join(BaseDir, "data/app.install.json"))
+	err := json.Unmarshal([]byte(result), &appInstall)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+	}
+	context.JSON(http.StatusOK, gin.H{
+		"status":  appInstall.Status,
+		"message": appInstall.Message,
+		"data":    appInstall.Data,
+	})
 }

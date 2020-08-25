@@ -25,7 +25,7 @@ func SetupRouter() *gin.Engine {
 				return
 			}
 			MaptoMethod := map[string]gin.HandlerFunc{
-				"get.message.user.unread": controller.MessageUnread,
+				"get.message.user.unread": controller.MessageUnRead,
 			}
 
 			MaptoMethod[defaultParams.Method](context)
@@ -37,11 +37,20 @@ func SetupRouter() *gin.Engine {
 				return
 			}
 			MaptoMethod := map[string]gin.HandlerFunc{
-				"get.message.user.unread": controller.MessageUnread,
-				"add.admin.item":          controller.AddAdminItem,
-				"check.admin.nickname":    controller.CheckAdminNickname,
-				"login.admin.user":        controller.CheckAdminNickname,
-				"get.menu.auth.list":      controller.CheckAdminNickname,
+				"add.admin.item":       controller.AdminItem,
+				"check.admin.nickname": controller.CheckAdmin,
+				"login.admin.user":     controller.LoginAdmin,
+			}
+			MaptoMethod[defaultParams.Method](context)
+		})
+		ApiGroup.POST("menu", func(context *gin.Context) {
+			var defaultParams request.DefaultParams
+			if !controller.BindCheck(&defaultParams, context) {
+				response.FailWithMessage(response.ParamValidateFailed, context)
+				return
+			}
+			MaptoMethod := map[string]gin.HandlerFunc{
+				"get.menu.auth.list": controller.MenuAuthList,
 			}
 
 			MaptoMethod[defaultParams.Method](context)
@@ -53,12 +62,11 @@ func SetupRouter() *gin.Engine {
 				return
 			}
 			MaptoMethod := map[string]gin.HandlerFunc{
-				"query.app.install.updated": controller.CheckAdminNickname,
+				"query.app.install.updated": controller.AppInstallUpdated,
 			}
 
 			MaptoMethod[defaultParams.Method](context)
 		})
-
 	}
 
 	return router
