@@ -27,7 +27,6 @@ func SetupRouter() *gin.Engine {
 		ApiGroup.POST("upload", controller.CommonHandle)
 		ApiGroup.POST("navigation", controller.CommonHandle)
 		ApiGroup.POST("notice_tpl", controller.CommonHandle)
-		ApiGroup.POST("payment", controller.CommonHandle)
 		ApiGroup.POST("payment_log", controller.CommonHandle)
 		ApiGroup.POST("region", controller.CommonHandle)
 		ApiGroup.POST("delivery_item", controller.CommonHandle)
