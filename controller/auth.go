@@ -13,3 +13,9 @@ func AuthGroupList(context *gin.Context)  {
 	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
 	context.JSON(http.StatusOK, dataMap)
 }
+
+func AuthRuleList(context *gin.Context)  {
+	result := common.ReadJson(filepath.Join(BaseDir, "data/auth.rule.list.json"))
+	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
+	context.JSON(http.StatusOK, dataMap)
+}

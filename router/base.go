@@ -53,6 +53,7 @@ func SetupRouter() *gin.Engine {
 			}
 			MaptoMethod := map[string]gin.HandlerFunc{
 				"get.menu.auth.list": controller.MenuAuthList,
+				"get.menu.list": controller.MenuList,
 			}
 
 			MaptoMethod[defaultParams.Method](context)
@@ -77,6 +78,18 @@ func SetupRouter() *gin.Engine {
 			}
 			MaptoMethod := map[string]gin.HandlerFunc{
 				"get.auth.group.list": controller.AuthGroupList,
+			}
+
+			MaptoMethod[defaultParams.Method](context)
+		})
+		ApiGroup.POST("auth_rule", func(context *gin.Context) {
+			var defaultParams request.DefaultParams
+			if !controller.BindCheck(&defaultParams, context) {
+				response.FailWithMessage(response.ParamValidateFailed, context)
+				return
+			}
+			MaptoMethod := map[string]gin.HandlerFunc{
+				"get.auth.rule.list": controller.AuthRuleList,
 			}
 
 			MaptoMethod[defaultParams.Method](context)

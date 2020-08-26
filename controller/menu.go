@@ -18,3 +18,9 @@ func MenuAuthList(context *gin.Context) {
 	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
 	context.JSON(http.StatusOK, dataMap)
 }
+
+func MenuList(context *gin.Context) {
+	result := common.ReadJson(filepath.Join(BaseDir, "data/menu.list.json"))
+	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
+	context.JSON(http.StatusOK, dataMap)
+}
