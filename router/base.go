@@ -54,6 +54,17 @@ func SetupRouter() *gin.Engine {
 		ApiGroup.POST("card", controller.CommonHandle)
 		ApiGroup.POST("card_use", controller.CommonHandle)
 		ApiGroup.POST("user", controller.CommonHandle)
+		ApiGroup.POST("ads_position", controller.CommonHandle)
+		ApiGroup.POST("ads", controller.CommonHandle)
+		ApiGroup.POST("article_cat", controller.CommonHandle)
+		ApiGroup.POST("article", controller.CommonHandle)
+		ApiGroup.POST("topic", controller.CommonHandle)
+		ApiGroup.POST("storage", controller.CommonHandle)
+		ApiGroup.POST("storage_style", controller.CommonHandle)
+		ApiGroup.POST("support", controller.CommonHandle)
+		ApiGroup.POST("delivery_dist", controller.CommonHandle)
+		ApiGroup.POST("friend_link", controller.CommonHandle)
+		ApiGroup.POST("qrcode", controller.CommonHandle)
 		ApiGroup.POST("admin_login", controller.LoginAdmin)
 	}
 

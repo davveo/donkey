@@ -61,6 +61,22 @@ var MaptoMethod = map[string]string{
 	"get.card.list":               common.ReadJson(filepath.Join(BaseDir, "data/card.list.json")),
 	"get.card.use.list":           common.ReadJson(filepath.Join(BaseDir, "data/card.use.list.json")),
 	"get.user.list":               common.ReadJson(filepath.Join(BaseDir, "data/user.list.json")),
+	"get.brand.list":              common.ReadJson(filepath.Join(BaseDir, "data/brand.list.json")),
+	"get.message.user.list":       common.ReadJson(filepath.Join(BaseDir, "data/message.user.list.json")),
+	"get.message.list":            common.ReadJson(filepath.Join(BaseDir, "data/message.list.json")),
+	"get.ads.position.list":       common.ReadJson(filepath.Join(BaseDir, "data/ads.position.list.json")),
+	"get.ads.list":                common.ReadJson(filepath.Join(BaseDir, "data/ads.list.json")),
+	"get.article.cat.list":        common.ReadJson(filepath.Join(BaseDir, "data/article.cat.list.json")),
+	"get.article.list":            common.ReadJson(filepath.Join(BaseDir, "data/article.list.json")),
+	"get.topic.list":              common.ReadJson(filepath.Join(BaseDir, "data/topic.list.json")),
+	"get.storage.list":            common.ReadJson(filepath.Join(BaseDir, "data/storage.list.json")),
+	"get.storage.style.list":      common.ReadJson(filepath.Join(BaseDir, "data/storage.style.list.json")),
+	"get.support.list":            common.ReadJson(filepath.Join(BaseDir, "data/support.list.json")),
+	"get.delivery.dist.list":      common.ReadJson(filepath.Join(BaseDir, "data/delivery.dist.list.json")),
+	"get.friendlink.list":         common.ReadJson(filepath.Join(BaseDir, "data/friendlink.list.json")),
+	"get.qrcode.list":             common.ReadJson(filepath.Join(BaseDir, "data/qrcode.list.json")),
+	"get.qrcode.callurl":          common.ReadJson(filepath.Join(BaseDir, "data/qrcode.callurl.json")),
+	"get.goods.type.list":         common.ReadJson(filepath.Join(BaseDir, "data/goods.type.list.json")),
 }
 
 func Default(result string, context *gin.Context) {
