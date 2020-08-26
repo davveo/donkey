@@ -2,36 +2,45 @@ package controller
 
 import (
 	"net/http"
+	"path/filepath"
 
 	"github.com/davveo/donkey/models/request"
+	"github.com/davveo/donkey/utils/common"
 	"github.com/davveo/donkey/utils/response"
 	"github.com/gin-gonic/gin"
+	"github.com/tidwall/gjson"
 )
 
-var MaptoMethod = map[string]gin.HandlerFunc{
-	"defalut":                   Default,
-	"get.setting.list":          Setting,
-	"get.upload.module":         Upload,
-	"get.action.log.list":       ActionLogList,
-	"get.help.router":           Help,
-	"get.auth.rule.list":        AuthRuleList,
-	"get.auth.group.list":       AuthGroupList,
-	"query.app.install.updated": AppInstallUpdated,
-	"get.menu.auth.list":        MenuAuthList,
-	"get.menu.list":             MenuList,
-	"add.admin.item":            AdminItem,
-	"check.admin.nickname":      CheckAdmin,
-	"login.admin.user":          LoginAdmin,
-	"get.admin.list":            AdminList,
-	"get.message.user.unread":   MessageUnRead,
+var MaptoMethod = map[string]string{
+	"defalut":                   "",
+	"get.setting.list":          common.ReadJson(filepath.Join(BaseDir, "data/setting.list.json")),
+	"get.upload.module":         common.ReadJson(filepath.Join(BaseDir, "data/upload.module.json")),
+	"get.action.log.list":       common.ReadJson(filepath.Join(BaseDir, "data/action.log.list.json")),
+	"get.help.router":           common.ReadJson(filepath.Join(BaseDir, "data/help.router.json")),
+	"get.auth.rule.list":        common.ReadJson(filepath.Join(BaseDir, "data/auth.rule.list.json")),
+	"get.auth.group.list":       common.ReadJson(filepath.Join(BaseDir, "data/auth.group.list.json")),
+	"query.app.install.updated": common.ReadJson(filepath.Join(BaseDir, "data/app.install.json")),
+	"get.menu.auth.list":        common.ReadJson(filepath.Join(BaseDir, "data/get.menu.auth.list.json")),
+	"get.menu.list":             common.ReadJson(filepath.Join(BaseDir, "data/menu.list.json")),
+	"add.admin.item":            common.ReadJson(filepath.Join(BaseDir, "data/navigation.list.json")),
+	"check.admin.nickname":      common.ReadJson(filepath.Join(BaseDir, "data/navigation.list.json")),
+	"login.admin.user":          common.ReadJson(filepath.Join(BaseDir, "data/login.admin.user.json")),
+	"get.admin.list":            common.ReadJson(filepath.Join(BaseDir, "data/admin.list.json")),
+	"get.message.user.unread":   common.ReadJson(filepath.Join(BaseDir, "data/message.user.unread.json")),
+	"get.navigation.list":       common.ReadJson(filepath.Join(BaseDir, "data/navigation.list.json")),
 }
 
-func Default(context *gin.Context) {
+func Default(result string, context *gin.Context) {
 	context.JSON(http.StatusNotFound, gin.H{
 		"data":    nil,
 		"message": "error",
 		"status":  http.StatusNotFound,
 	})
+}
+
+func doHandle(result string, context *gin.Context) {
+	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
+	context.JSON(http.StatusOK, dataMap)
 }
 
 func CommonHandle(context *gin.Context) {
@@ -40,11 +49,10 @@ func CommonHandle(context *gin.Context) {
 		response.FailWithMessage(response.ParamValidateFailed, context)
 		return
 	}
-
-	handlerFunc, ok := MaptoMethod[defaultParams.Method]
+	rs, ok := MaptoMethod[defaultParams.Method]
 	if ok {
-		handlerFunc(context)
+		doHandle(rs, context)
 	} else {
-		Default(context)
+		Default(rs, context)
 	}
 }

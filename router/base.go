@@ -25,6 +25,7 @@ func SetupRouter() *gin.Engine {
 		ApiGroup.POST("action_log", controller.CommonHandle)
 		ApiGroup.POST("setting", controller.CommonHandle)
 		ApiGroup.POST("upload", controller.CommonHandle)
+		ApiGroup.POST("navigation", controller.CommonHandle)
 	}
 
 	return router
