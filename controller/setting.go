@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 )
 
-func AppInstallUpdated(context *gin.Context) {
-	result := common.ReadJson(filepath.Join(BaseDir, "data/app.install.json"))
+func Setting(context *gin.Context)  {
+	result := common.ReadJson(filepath.Join(BaseDir, "data/setting.list.json"))
 	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
 	context.JSON(http.StatusOK, dataMap)
 }

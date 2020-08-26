@@ -1,0 +1,1 @@
+{"status":200,"message":"success","data":[{"name":"CareyShop(本地上传)","module":"careyshop","default":1},{"name":"七牛云 KODO","module":"qiniu","default":0},{"name":"阿里云 OSS","module":"aliyun","default":0}]}

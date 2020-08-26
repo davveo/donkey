@@ -1,9 +1,6 @@
 package controller
 
 import (
-	"github.com/tidwall/gjson"
-	"net/http"
-	"path/filepath"
 	"time"
 
 	"github.com/davveo/donkey/utils/log"
@@ -11,7 +8,6 @@ import (
 	"github.com/allegro/bigcache"
 
 	"github.com/davveo/donkey/utils/captcha"
-	"github.com/davveo/donkey/utils/common"
 	"github.com/davveo/donkey/utils/response"
 	"github.com/gin-gonic/gin"
 )
@@ -53,8 +49,3 @@ func QrCode(context *gin.Context) {
 
 }
 
-func AppInstallUpdated(context *gin.Context) {
-	result := common.ReadJson(filepath.Join(BaseDir, "data/app.install.json"))
-	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
-	context.JSON(http.StatusOK, dataMap)
-}
