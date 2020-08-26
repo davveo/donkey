@@ -35,6 +35,7 @@ var MaptoMethod = map[string]string{
 	"get.delivery.company.list": common.ReadJson(filepath.Join(BaseDir, "data/delivery.company.list.json")),
 	"get.delivery.list":         common.ReadJson(filepath.Join(BaseDir, "data/delivery.list.json")),
 	"get.app.list":              common.ReadJson(filepath.Join(BaseDir, "data/app.list.json")),
+	"get.app.install.list":      common.ReadJson(filepath.Join(BaseDir, "data/app.install.list.json")),
 }
 
 func Default(result string, context *gin.Context) {

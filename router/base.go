@@ -33,6 +33,7 @@ func SetupRouter() *gin.Engine {
 		ApiGroup.POST("delivery_item", controller.CommonHandle)
 		ApiGroup.POST("delivery", controller.CommonHandle)
 		ApiGroup.POST("app", controller.CommonHandle)
+		ApiGroup.POST("app_install", controller.CommonHandle)
 	}
 
 	return router
