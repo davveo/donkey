@@ -2,9 +2,6 @@ package router
 
 import (
 	"github.com/davveo/donkey/controller"
-	"github.com/davveo/donkey/models/request"
-	"github.com/davveo/donkey/utils/response"
-
 	"github.com/davveo/donkey/middleware"
 	"github.com/gin-gonic/gin"
 )
@@ -18,87 +15,16 @@ func SetupRouter() *gin.Engine {
 	// 路由管理
 	ApiGroup := router.Group("api/v1")
 	{
-		ApiGroup.POST("message", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-
-		})
-		ApiGroup.POST("admin", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
-		ApiGroup.POST("menu", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
-		ApiGroup.POST("app_install.html", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
-		ApiGroup.POST("auth_group", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
-		ApiGroup.POST("auth_rule", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
-		ApiGroup.POST("help", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
-		ApiGroup.POST("action_log", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
-		ApiGroup.POST("setting", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
-		ApiGroup.POST("upload", func(context *gin.Context) {
-			var defaultParams request.DefaultParams
-			if !controller.BindCheck(&defaultParams, context) {
-				response.FailWithMessage(response.ParamValidateFailed, context)
-				return
-			}
-			controller.CommonHandle(defaultParams, context)
-		})
+		ApiGroup.POST("message", controller.CommonHandle)
+		ApiGroup.POST("admin", controller.CommonHandle)
+		ApiGroup.POST("menu", controller.CommonHandle)
+		ApiGroup.POST("app_install.html", controller.CommonHandle)
+		ApiGroup.POST("auth_group", controller.CommonHandle)
+		ApiGroup.POST("auth_rule", controller.CommonHandle)
+		ApiGroup.POST("help", controller.CommonHandle)
+		ApiGroup.POST("action_log", controller.CommonHandle)
+		ApiGroup.POST("setting", controller.CommonHandle)
+		ApiGroup.POST("upload", controller.CommonHandle)
 	}
 
 	return router
