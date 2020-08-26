@@ -40,6 +40,7 @@ func SetupRouter() *gin.Engine {
 				"add.admin.item":       controller.AdminItem,
 				"check.admin.nickname": controller.CheckAdmin,
 				"login.admin.user":     controller.LoginAdmin,
+				"get.admin.list":     controller.AdminList,
 			}
 			MaptoMethod[defaultParams.Method](context)
 		})
@@ -63,6 +64,30 @@ func SetupRouter() *gin.Engine {
 			}
 			MaptoMethod := map[string]gin.HandlerFunc{
 				"query.app.install.updated": controller.AppInstallUpdated,
+			}
+
+			MaptoMethod[defaultParams.Method](context)
+		})
+		ApiGroup.POST("auth_group", func(context *gin.Context) {
+			var defaultParams request.DefaultParams
+			if !controller.BindCheck(&defaultParams, context) {
+				response.FailWithMessage(response.ParamValidateFailed, context)
+				return
+			}
+			MaptoMethod := map[string]gin.HandlerFunc{
+				"get.auth.group.list": controller.AuthGroupList,
+			}
+
+			MaptoMethod[defaultParams.Method](context)
+		})
+		ApiGroup.POST("help", func(context *gin.Context) {
+			var defaultParams request.DefaultParams
+			if !controller.BindCheck(&defaultParams, context) {
+				response.FailWithMessage(response.ParamValidateFailed, context)
+				return
+			}
+			MaptoMethod := map[string]gin.HandlerFunc{
+				"get.help.router": controller.Help,
 			}
 
 			MaptoMethod[defaultParams.Method](context)

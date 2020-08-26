@@ -34,5 +34,18 @@ func CheckAdmin(context *gin.Context) {
 
 }
 
-func MessageUnread(context *gin.Context) {
+
+func AdminList(context *gin.Context)  {
+	var adminList fake.AdminList
+	result := common.ReadJson(filepath.Join(BaseDir, "data/admin.list.json"))
+	err := json.Unmarshal([]byte(result), &adminList)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+	}
+	context.JSON(http.StatusOK, gin.H{
+		"status":  adminList.Status,
+		"message": adminList.Message,
+		"data":    adminList.Data,
+	})
+
 }
