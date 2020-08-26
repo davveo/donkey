@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/davveo/donkey/controller"
 	"github.com/davveo/donkey/models/request"
 	"github.com/davveo/donkey/utils/response"
@@ -91,6 +92,20 @@ func SetupRouter() *gin.Engine {
 			}
 
 			MaptoMethod[defaultParams.Method](context)
+		})
+		ApiGroup.POST("action_log", func(context *gin.Context) {
+			var defaultParams request.DefaultParams
+			if !controller.BindCheck(&defaultParams, context) {
+				response.FailWithMessage(response.ParamValidateFailed, context)
+				return
+			}
+			MaptoMethod := map[string]gin.HandlerFunc{
+				"get.action.log.list": controller.ActionLogList,
+			}
+
+			handlerFunc, ok := MaptoMethod[defaultParams.Method]
+			fmt.Println(ok)
+			handlerFunc(context)
 		})
 	}
 

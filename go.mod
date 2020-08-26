@@ -22,6 +22,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/smartwalle/alipay/v3 v3.1.5
+	github.com/tidwall/gjson v1.6.0
 	github.com/urfave/cli v1.22.4
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect

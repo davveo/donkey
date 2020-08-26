@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 )
 
-func MessageUnRead(context *gin.Context) {
-	result := common.ReadJson(filepath.Join(BaseDir, "data/message.user.unread.json"))
+func ActionLogList(context *gin.Context)  {
+	result := common.ReadJson(filepath.Join(BaseDir, "data/action.log.list.json"))
 	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
 	context.JSON(http.StatusOK, dataMap)
 }
