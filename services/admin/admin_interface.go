@@ -1,7 +1,7 @@
 package admin
 
 type ServiceInterface interface {
-	Login(username string) (bool, error)
+	Login(username, password string, lastLogin int64, lastIp, platform string, isGetToken bool) (bool, error)
 	Logout() bool
 	Close()
 }

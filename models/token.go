@@ -39,7 +39,8 @@ func (Token) TableName() string {
 }
 
 func (token *Token) Update(db *gorm.DB, instance *Token, lastLogin int64, lastIp string) error {
-	return db.Model(&instance).Updates(Token{LastLogin: lastLogin, LastIP: lastIp}).Error
+	//return db.Model(&instance).Updates(Token{LastLogin: lastLogin, LastIP: lastIp}).Error
+	return nil
 }
 
 func (token *Token) FindByClientId(db *gorm.DB, clientId uint32, clientType uint8, platform string) (*Token, error) {

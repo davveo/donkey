@@ -1,0 +1,1 @@
+{"status":200,"message":"success","data":[{"delivery_id":1,"name":"顺丰速运","alias":"快递配送","code":"SF"},{"delivery_id":20,"name":"EMS","alias":"物流配送","code":"EMS"},{"delivery_id":21,"name":"买家自提","alias":"买家自提","code":"ZT"},{"delivery_id":22,"name":"同城配送","alias":"同城配送","code":"TC"}]}
