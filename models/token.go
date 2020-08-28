@@ -11,19 +11,19 @@ import (
 )
 
 type Token struct {
-	TokenID uint32 `json:"token_id"`
+	TokenID uint32 `json:"-"`
 	// ClientID 编号
-	ClientID uint32 `json:"client_id"`
+	ClientID uint32 `json:"-"`
 	// GroupID 用户组Id
 	GroupID uint32 `json:"group_id"`
 	// Username 账号
-	Username string `json:"username"`
+	Username string `json:"-"`
 	// ClientType 0=顾客 1=管理组
-	ClientType uint32 `json:"client_type"`
+	ClientType uint32 `json:"-"`
 	// Platform 来源终端
-	Platform string `json:"platform"`
+	Platform string `json:"-"`
 	// Code 随机密钥
-	Code string `json:"code"`
+	Code string `json:"-"`
 	// Token 授权码
 	Token string `json:"token"`
 	// TokenExpires 授权码过期时间
@@ -75,6 +75,8 @@ func (token *Token) SetToken(db *gorm.DB, clientId, groupId, clientType uint32, 
 	tokenStr := decry.UserMd5(fmt.Sprintf("%d%d%s", clientId, clientType, code))
 	refreshStr := decry.UserMd5(fmt.Sprintf("%s%s", randomstr.GenRandomString(32), tokenStr))
 	expires := time.Now().Unix() + (30 * 24 * 60 * 60) // 30天
+
+	// TODO 这里查询存在问题
 	instance, err := token.FindByClientId(db, clientId, clientType, platform)
 	if err != nil && instance == nil {
 		// 创建操作

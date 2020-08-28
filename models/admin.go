@@ -10,7 +10,7 @@ type AdminAccount struct {
 	// Username 账号
 	Username string `json:"username"`
 	// Password 密码
-	Password string `json:"password"`
+	Password string `json:"-"`
 	// GroupID 用户组Id
 	GroupID uint32 `json:"group_id"`
 	// Nickname 昵称
@@ -24,7 +24,7 @@ type AdminAccount struct {
 	// Status 0=禁用 1=启用
 	Status int8 `json:"status"`
 	// IsDelete 0=未删 1=已删
-	IsDelete int8 `json:"is_delete"`
+	IsDelete int8 `json:"-"`
 	// CreateTime 创建日期
 	CreateTime int32 `json:"create_time"`
 	// UpdateTime 更新日期

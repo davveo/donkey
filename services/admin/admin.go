@@ -1,11 +1,12 @@
 package admin
 
 import (
-	"fmt"
+	"github.com/davveo/donkey/models/response"
+
+	pass "github.com/davveo/donkey/utils/password"
 
 	"github.com/davveo/donkey/models"
 	"github.com/davveo/donkey/utils/common"
-	pass "github.com/davveo/donkey/utils/password"
 	"github.com/jinzhu/gorm"
 )
 
@@ -21,42 +22,42 @@ func NewService(db *gorm.DB) *Service {
 
 func (s *Service) Close() {}
 
-func (s *Service) Login(username, password string, lastLogin int64, lastIp, platform string, isGetToken bool) (bool, error) {
+func (s *Service) Login(username, password string, lastLogin int64, lastIp, platform string, isGetToken bool) (*response.AdminResp, error) {
 	// 根据账号获取
 	adminAccount := new(models.AdminAccount)
 	accountInstance, err := adminAccount.FindByUserName(s.db, username)
 	if err != nil {
-		return false, common.ErrAccountNotFound
+		return nil, common.ErrAccountNotFound
 	}
 	if accountInstance.Status == common.NO {
-		return false, common.AccountForbbinden
+		return nil, common.AccountForbbinden
 	}
-	hashPassword, err := pass.HashPassword(password)
-	if err != nil {
-		return false, err
-	}
-	if string(hashPassword) != accountInstance.Password {
-		return false, common.ErrAccountOrPassword
+
+	if !pass.ComparePasswords(accountInstance.Password, []byte(password)) {
+		return nil, common.ErrAccountOrPassword
 	}
 	err = adminAccount.Update(s.db, accountInstance, lastLogin, lastIp)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
 	////////////// 返回token信息
 
 	// 如果不需要返回token, 直接返回用户信息
 	if !isGetToken {
-		return true, nil
+		return nil, nil
 	}
-	token := new(models.Token)
+	token := &models.Token{}
 	tokenInstance, err := token.SetToken(s.db, accountInstance.AdminID,
 		accountInstance.GroupID, 1, accountInstance.Username, platform)
 	if err != nil {
-		return false, nil
+		return nil, nil
 	}
-	fmt.Println(tokenInstance, accountInstance)
-	return true, nil
+
+	return &response.AdminResp{
+		Admin: accountInstance,
+		Token: tokenInstance,
+	}, nil
 }
 
 func (s *Service) Logout() bool {
