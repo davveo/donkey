@@ -92,3 +92,10 @@ func (token *Token) SetToken(db *gorm.DB, adminId, groupId uint32, clientType ui
 	}
 	return t, nil
 }
+
+// 刷新token
+// clientType  0/1 顾客或者管理组
+// refresh  刷新令牌
+// oldToken 原授权令牌
+func (token *Token) RefreshToken(db *gorm.DB, clientType, clientID, oldToken string) {
+}
