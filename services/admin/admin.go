@@ -28,7 +28,7 @@ func (s *Service) Login(username, password string, lastLogin int64, lastIp, plat
 	if err != nil {
 		return false, common.ErrAccountNotFound
 	}
-	if accountInstance.Status != 1 {
+	if accountInstance.Status == common.NO {
 		return false, common.AccountForbbinden
 	}
 	hashPassword, err := pass.HashPassword(password)
@@ -43,18 +43,19 @@ func (s *Service) Login(username, password string, lastLogin int64, lastIp, plat
 		return false, err
 	}
 
-	// 如果不需要返回token
+	////////////// 返回token信息
+
+	// 如果不需要返回token, 直接返回用户信息
 	if !isGetToken {
 		return true, nil
 	}
 	token := new(models.Token)
 	tokenInstance, err := token.SetToken(s.db, accountInstance.AdminID,
-		accountInstance.GroupID, 1,
-		accountInstance.Username, platform)
+		accountInstance.GroupID, 1, accountInstance.Username, platform)
 	if err != nil {
 		return false, nil
 	}
-	fmt.Println(tokenInstance)
+	fmt.Println(tokenInstance, accountInstance)
 	return true, nil
 }
 
