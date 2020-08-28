@@ -7,6 +7,9 @@ var (
 	ErrAccountNotFound   = errors.New("账号不存在")
 	AccountForbbinden    = errors.New("账号已禁用")
 	ErrAccountOrPassword = errors.New("账号或密码错误")
+	ErrRefreshNotFound   = errors.New("refresh不存在")
+	ErrRefreshInValid    = errors.New("refresh已过期")
+	ErrRefresh           = errors.New("refresh错误")
 )
 
 const (
