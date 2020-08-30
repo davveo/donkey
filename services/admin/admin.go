@@ -1,7 +1,9 @@
 package admin
 
 import (
+	"github.com/davveo/donkey/models/request"
 	"github.com/davveo/donkey/models/response"
+	"time"
 
 	pass "github.com/davveo/donkey/utils/password"
 
@@ -22,10 +24,10 @@ func NewService(db *gorm.DB) *Service {
 
 func (s *Service) Close() {}
 
-func (s *Service) Login(username, password string, lastLogin int64, lastIp, platform string, isGetToken bool) (*response.AdminResp, error) {
+func (s *Service) Login(username, password string, lastLogin time.Time, lastIp, platform string, isGetToken bool) (*response.AdminResp, error) {
 	// 根据账号获取
-	adminAccount := new(models.AdminAccount)
-	accountInstance, err := adminAccount.FindByUserName(s.db, username)
+	Admin := new(models.Admin)
+	accountInstance, err := Admin.FindByUserName(s.db, username)
 	if err != nil {
 		return nil, common.ErrAccountNotFound
 	}
@@ -36,7 +38,7 @@ func (s *Service) Login(username, password string, lastLogin int64, lastIp, plat
 	if !pass.ComparePasswords(accountInstance.Password, []byte(password)) {
 		return nil, common.ErrAccountOrPassword
 	}
-	err = adminAccount.Update(s.db, accountInstance, lastLogin, lastIp)
+	err = Admin.Update(s.db, accountInstance, lastLogin, lastIp)
 	if err != nil {
 		return nil, err
 	}
@@ -48,8 +50,8 @@ func (s *Service) Login(username, password string, lastLogin int64, lastIp, plat
 		return nil, nil
 	}
 	token := &models.Token{}
-	tokenInstance, err := token.SetToken(s.db, accountInstance.AdminID,
-		accountInstance.GroupID, 1, accountInstance.Username, platform)
+	tokenInstance, err := token.SetToken(s.db, accountInstance.ID,
+		accountInstance.GroupId, 1, accountInstance.Username, platform)
 	if err != nil {
 		return nil, nil
 	}
@@ -62,4 +64,13 @@ func (s *Service) Login(username, password string, lastLogin int64, lastIp, plat
 
 func (s *Service) Logout() bool {
 	return true
+}
+
+func (s *Service) AdminList() (err error, list interface{}, total int) {
+	Admin := models.Admin{}
+	err, list, total = Admin.GetAdminList(s.db, request.PageInfo{
+		Page:     1,
+		PageSize: 20,
+	}, "", false)
+	return
 }

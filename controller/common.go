@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/davveo/donkey/utils/log"
@@ -46,6 +47,39 @@ func HealthCheck(context *gin.Context) {
 }
 
 func QrCode(context *gin.Context) {
-
+	value, exists := context.Get("client")
+	fmt.Println(value, exists)
+	//clientType := context.DefaultQuery("client_type", "-1")
+	//appKey := ""
+	//resp := map[string]interface{}{"captcha": true, "session_id": ""}
+	//app := models.App{}
+	//appResult, _ := app.FindByKey(nil, appKey)
+	//if appResult != nil {
+	//	if appResult.Captcha == 0 {
+	//		context.JSON(http.StatusBadRequest, gin.H{
+	//			"status":  http.StatusBadRequest,
+	//			"message": "验证码已经禁用!",
+	//			"data":    resp,
+	//		})
+	//		return
+	//	}
+	//}
+	//
+	//if clientType == "-1" {
+	//	resp["session_id"] = ""
+	//} else {
+	//	resp["session_id"] = ""
+	//}
+	//
+	//context.JSON(http.StatusBadRequest, gin.H{
+	//	"status":  http.StatusBadRequest,
+	//	"message": err.Error(),
+	//	"data":    resp,
+	//})
 }
 
+func GetClientToken(context *gin.Context) string {
+	value, exists := context.Get("client")
+	fmt.Println(value, exists)
+	return ""
+}

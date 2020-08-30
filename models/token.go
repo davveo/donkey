@@ -13,9 +13,9 @@ import (
 type Token struct {
 	TokenID uint32 `json:"-"`
 	// ClientID 编号
-	ClientID uint32 `json:"-"`
+	ClientID uint `json:"-"`
 	// GroupID 用户组Id
-	GroupID uint32 `json:"group_id"`
+	GroupID uint `json:"group_id"`
 	// Username 账号
 	Username string `json:"-"`
 	// ClientType 0=顾客 1=管理组
@@ -46,8 +46,8 @@ func (token *Token) Update(db *gorm.DB, instance, UpdateInstance *Token) error {
 	return db.Model(&instance).Updates(&UpdateInstance).Error
 }
 
-func (token *Token) FindByClientId(db *gorm.DB, clientId, clientType uint32, platform string) (*Token, error) {
-	t := new(Token)
+func (token *Token) FindByClientId(db *gorm.DB, clientId uint, clientType uint32, platform string) (*Token, error) {
+	t := Token{}
 	has := db.Where("client_id = ?", clientId).
 		Where("client_type = ?", clientType).
 		Where("platform = ?", platform).
@@ -55,11 +55,21 @@ func (token *Token) FindByClientId(db *gorm.DB, clientId, clientType uint32, pla
 	if !has {
 		return nil, common.ErrNotFound
 	}
-	return t, nil
+	return &t, nil
+}
+
+func (token *Token) FindByToken(db *gorm.DB, tokenStr string) (*Token, error) {
+	t := Token{}
+	has := db.Where("token = ?", tokenStr).
+		Take(&t).RecordNotFound()
+	if !has {
+		return nil, common.ErrNotFound
+	}
+	return &t, nil
 }
 
 func (token *Token) FindByClientIdAndToken(db *gorm.DB, clientId, clientType uint32, oldToken string) (*Token, error) {
-	t := new(Token)
+	t := Token{}
 	has := db.Where("client_id = ?", clientId).
 		Where("client_type = ?", clientType).
 		Where("token = ?", oldToken).
@@ -67,16 +77,15 @@ func (token *Token) FindByClientIdAndToken(db *gorm.DB, clientId, clientType uin
 	if !has {
 		return nil, common.ErrNotFound
 	}
-	return t, nil
+	return &t, nil
 }
 
-func (token *Token) SetToken(db *gorm.DB, clientId, groupId, clientType uint32, username, platform string) (*Token, error) {
+func (token *Token) SetToken(db *gorm.DB, clientId, groupId uint, clientType uint32, username, platform string) (*Token, error) {
 	code := randomstr.GenRandomString(32)
 	tokenStr := decry.UserMd5(fmt.Sprintf("%d%d%s", clientId, clientType, code))
 	refreshStr := decry.UserMd5(fmt.Sprintf("%s%s", randomstr.GenRandomString(32), tokenStr))
 	expires := time.Now().Unix() + (30 * 24 * 60 * 60) // 30天
 
-	// TODO 这里查询存在问题
 	instance, err := token.FindByClientId(db, clientId, clientType, platform)
 	if err != nil && instance == nil {
 		// 创建操作

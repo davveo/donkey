@@ -16,6 +16,6 @@ import "github.com/davveo/donkey/models"
 //}
 
 type AdminResp struct {
-	Admin *models.AdminAccount
+	Admin *models.Admin
 	Token *models.Token
 }

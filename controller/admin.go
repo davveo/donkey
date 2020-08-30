@@ -2,13 +2,9 @@ package controller
 
 import (
 	"net/http"
-	"path/filepath"
 	"time"
 
 	"github.com/davveo/donkey/services"
-	"github.com/tidwall/gjson"
-
-	"github.com/davveo/donkey/utils/common"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,7 +21,7 @@ func LoginAdmin(context *gin.Context) {
 	// TODO 获取外部请求参数
 	resp, err := services.AdminService.Login(
 		"admin2", "admin2",
-		time.Now().Unix(), "127.0.0.1",
+		time.Now(), "127.0.0.1",
 		"admin", true)
 	if err != nil {
 		message = err.Error()
@@ -55,7 +51,16 @@ func CheckAdmin(context *gin.Context) {
 }
 
 func AdminList(context *gin.Context) {
-	result := common.ReadJson(filepath.Join(BaseDir, "data/admin.list.json"))
-	dataMap, _ := gjson.Parse(result).Value().(map[string]interface{})
-	context.JSON(http.StatusOK, dataMap)
+	/*
+
+	 */
+	_, list, total := services.AdminService.AdminList()
+	context.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": "success",
+		"data": map[string]interface{}{
+			"item":         list,
+			"total_result": total,
+		},
+	})
 }

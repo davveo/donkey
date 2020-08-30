@@ -1,7 +1,11 @@
 package captcha
 
 import (
+	"crypto/md5"
+	"fmt"
+	"github.com/davveo/donkey/utils/common"
 	"image/color"
+	"strings"
 
 	"github.com/mojocn/base64Captcha"
 )
@@ -10,6 +14,20 @@ var (
 	driver base64Captcha.Driver
 	store  = base64Captcha.DefaultMemStore // TODO 后期考虑使用redis存储
 )
+
+type Captcha struct {
+	SeKey   string
+	CodeSet string
+	Expire  int64
+}
+
+func NewCaptcha() *Captcha {
+	return &Captcha{
+		SeKey:   "this is a test string",
+		CodeSet: "2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY",
+		Expire:  120,
+	}
+}
 
 func GenerateCaptcha(captchaType string) (id, b64s string, err error) {
 	c := color.RGBA{R: 0, G: 0, B: 0, A: 0}
@@ -43,4 +61,45 @@ func GenerateCaptcha(captchaType string) (id, b64s string, err error) {
 
 func VerfiyCaptcha(idKey, verifyVal string) bool {
 	return store.Verify(idKey, verifyVal, true)
+}
+
+// 返回验证码标识
+func (c *Captcha) GetKey(str string) string {
+	return c.authCode(str)
+}
+
+// 验证验证码是否正确
+// code 用户验证码
+// id 已经生成的验证码标示
+func (c *Captcha) Check(code, id string) bool {
+	return false
+}
+
+func (c *Captcha) GetImage() {
+
+}
+
+func (c *Captcha) WriteCurve() {
+
+}
+
+func (c *Captcha) getMd5Str(str string) string {
+	return fmt.Sprintf("%x", md5.Sum([]byte(str)))
+}
+
+func (c *Captcha) getPart(str string, start, end int) string {
+	return common.SubString(str, start, end)
+}
+
+func (c *Captcha) authCode(str string) string {
+	var (
+		build strings.Builder
+	)
+	str1, str2 := c.getMd5Str(c.SeKey), c.getMd5Str(str)
+	key := c.getPart(str1, 5, 8)
+	iStr := c.getPart(str2, 8, 10)
+
+	build.WriteString(key)
+	build.WriteString(iStr)
+	return c.getMd5Str(build.String())
 }

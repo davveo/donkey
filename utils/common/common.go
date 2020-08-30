@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"reflect"
 	"regexp"
 )
 
@@ -45,4 +46,45 @@ func ReadJson(filePath string) (result string) {
 		}
 	}
 	return result
+}
+
+func SubString(str string, begin, length int) (substr string) {
+	// 将字符串的转换成[]rune
+	rs := []rune(str)
+	lth := len(rs)
+
+	// 简单的越界判断
+	if begin < 0 {
+		begin = 0
+	}
+	if begin >= lth {
+		begin = lth
+	}
+	end := begin + length
+	if end > lth {
+		end = lth
+	}
+
+	// 返回子串
+	return string(rs[begin:end])
+}
+
+func InArray(needle interface{}, haystack interface{}) (exists bool, index int) {
+	exists = false
+	index = -1
+
+	switch reflect.TypeOf(haystack).Kind() {
+	case reflect.Slice:
+		s := reflect.ValueOf(haystack)
+
+		for i := 0; i < s.Len(); i++ {
+			if reflect.DeepEqual(needle, s.Index(i).Interface()) == true {
+				index = i
+				exists = true
+				return
+			}
+		}
+	}
+
+	return
 }

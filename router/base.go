@@ -9,8 +9,10 @@ import (
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 	// 中间件管理
+	router.Use(middleware.OperationMiddleWare())
 	router.Use(middleware.CorsMiddleWare())
 	router.Use(middleware.JwtMiddleWare())
+	router.Use(middleware.GlobalMiddleWare())
 
 	// 路由管理
 	ApiGroup := router.Group("api/v1")
@@ -66,6 +68,13 @@ func SetupRouter() *gin.Engine {
 		ApiGroup.POST("friend_link", controller.CommonHandle)
 		ApiGroup.POST("qrcode", controller.CommonHandle)
 		ApiGroup.POST("admin_login", controller.LoginAdmin)
+		ApiGroup.POST("common/qrcode", controller.QrCode)
+		ApiGroup.POST("test/qrcode", controller.QrCode)
+		ApiGroup.GET("test", controller.QrCode)
+		ApiGroup.GET("test/admin/list", controller.QrCode)
+	}
+	{
+		ApiGroup.GET("admin/list", controller.AdminList)
 	}
 
 	return router
